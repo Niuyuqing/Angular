@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
+	<style type="text/css">
+		.error{
+			border-color: red;			
+		}
+	</style>
+</head>
+<body ng-app="test" ng-controller="cont1">
+	<!--ng-class="{ 'error':sign.username.$invalid && sign.username.$touched}" 
+	开启验证，如果不符合，则添加error样式，并且满足已经点击过的，防止上来就添加error样式-->
+	<form name="sign" ng-submit="submitForm()">
+		<div class="form-group">
+			<label for="">用户名：</label>
+			<input class="form-control" 
+				name="username" 
+				ng-class="{ 'error':sign.username.$invalid && sign.username.$touched}" 
+				ng-minlength="4" 
+				required 
+				ng-model="a" />
+			<div ng-if="sign.username.$invalid && sign.username.$touched">您的输入有误请检查</div>
+		</div>
+	</form>
+	
+	<script src="../js/angular.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var app = angular.module('test',[]);
+		app.controller('cont1',function ($scope) {
+			$scope.submitForm = function () {
+				console.log('表单提交了');
+			}
+		})
+	</script>
+</body>
+</html>
