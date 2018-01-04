@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh" ng-app="test">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			li {
+				list-style: none;
+				margin-bottom: 10px;
+			}
+			
+			#wrap {
+				padding: 20px;
+			}
+			.pages li{
+				display: inline-block;
+				width: 30px;
+				height: 30px;
+				text-align: center;
+				line-height: 30px;
+				float: left;
+				border: 1px solid blue;
+				margin-right: 10px;
+				cursor: pointer;
+			}
+			.pages li:hover{
+				background: grey;
+				color: white;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div id="wrap" ng-controller="weibo">
+			<p>
+				<input type="text" ng-model="inputText" />
+				<button ng-click="submitMsg()">提交评论</button>
+			</p>
+			<div>
+				<p ng-show="replices.length==0">暂无数据</p>
+				<ul>
+					<li ng-repeat="replice in replices">
+						<p>{{replice.content}}</p>
+						<p>
+							<span>{{replice.time*1000|date:"yyyy年MM月dd日"}}</span>
+							<span ng-click="fnAcc(replice.id)">赞：<span>{{replice.acc}}</span></span>
+							<span ng-click="fnRef(replice.id)">踩：<span>{{replice.ref}}</span></span>
+						</p>
+					</li>
+				</ul>
+			</div>
+			<ul class="pages">
+				<li ng-repeat="item in pages" ng-click="getPage(item.num)">{{item.num}}</li>
+			</ul>
+		</div>
+
+		<script src="../js/angular.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var app = angular.module('test', []);
+			app.controller('weibo', function($scope, $http) {
+				$scope.replices = [];
+				
+				//获取、显示留言
+				function getPage(p) {
+					//alert(p)
+					$http.get('getMsg.json',{
+						params:{act:'get',page:p}
+					}).success(function (res) {
+						$scope.replices = res;
+					}).error(function () {
+						alert('读取失败')
+					});
+				}
+				
+				getPage(1);
+				$scope.getPage = getPage;
+				
+				//提交留言
+				$scope.submitMsg = function(){
+					$http.get('getMsg.json',{
+						params:{act:'add',content:$scope.inputText}	
+					}).success(function (res) {
+						$scope.replices.unshift({
+							id : 		9,
+							content : 	$scope.inputText,
+							time : 		1515046699,
+							acc :		0,
+							ref : 		0
+						});
+						
+						if ($scope.replices.length > 6) {
+							$scope.replices.pop();
+						};
+						
+						$scope.inputText = "";
+					}).error(function () {
+						alert('提交失败')
+					});
+				};
+				
+				$scope.pages = [];	
+				$http.get('./pages.json',{
+					params : {act : 'get_page_count'}
+				}).success(function (res) {
+					$scope.pages = res;
+				}).error(function () {
+					alert('错误')
+				});
+				
+				//顶、踩函数
+				$scope.fnAcc = function(id){
+					//alert(id);
+					for(var i=0;i<$scope.replices.length;i++){
+						if ($scope.replices[i].id==id) {
+							$scope.replices[i].acc++;
+						}
+					}
+				};
+				$scope.fnRef = function(id){
+					//alert(id);
+					for(var i=0;i<$scope.replices.length;i++){
+						if ($scope.replices[i].id==id) {
+							$scope.replices[i].ref++;
+						}
+					}
+				};
+				
+			});
+		</script>
+	</body>
+
+</html>
