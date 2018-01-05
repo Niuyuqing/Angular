@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh" ng-app="myApp">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>AngularJS入门学习</title>
+		<script src="../js/angular.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<hello mycolor="red">我是林炳文~~~</hello>
+	</body>
+	<script type="text/javascript">
+		var app = angular.module('myApp', []);
+		app.directive('hello', function() {
+			return {
+				restrict: 'EA',
+				transclude: true, //注意此处必须设置为true 
+				controller: function($scope, $element, $attrs, $transclude, $log) { //在这里你可以注入你想注入的服务 
+					$transclude(function(clone) {
+						var a = angular.element('<p>');
+						a.css('color', $attrs.mycolor);
+						a.text(clone.text());
+						$element.append(a);
+					});
+					$log.info("hello everyone");
+				}
+			};
+		});
+	</script>
+
+</html>

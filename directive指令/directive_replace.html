@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh" ng-app="test">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>Document</title>
+</head>
+<body>
+	<hello>
+		<p>我在这里</p>
+		<p>哈哈</p>
+	</hello>
+	<script src="../js/angular.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var app = angular.module('test',[]);
+		app.directive('hello',function () {
+			return {
+				restrict:'E',
+				template:'<div>hello world</div>',
+				replace:true
+			}
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh" ng-app="app">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+		<style type="text/css">
+			.expander {
+				border: 1px solid black;
+				width: 250px;
+			}
+			
+			.expander>.title {
+				background-color: black;
+				color: white;
+				padding: .1em .3em;
+				cursor: pointer;
+			}
+			
+			.expander>.body {
+				padding: .1em .3em;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<hello-world></hello-world>
+		<hello-world2 title='我是第二个directive'></hello-world2>
+		<script src="../js/angular.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var app = angular.module('app', []);
+			app.directive('helloWorld', function() {
+				return {
+					restrict: 'E',
+					template: '<div><h1>Hi 我是林炳文~~~</h1></div>',
+					replace: true
+				};
+			});
+			app.directive("helloWorld2", function() {
+				return {
+					restrict: 'EAC',
+					template: function(tElement, tAttrs) {
+						var _html = '';
+						_html += '<div>' + 'hello ' + tAttrs.title + '</div>';
+						return _html;
+					}
+				};
+			});
+		</script>
+	</body>
+
+</html>
