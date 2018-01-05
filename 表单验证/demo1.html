@@ -23,9 +23,10 @@
 				ng-class="{ 'error':sign.username.$invalid && sign.username.$touched}" 
 				ng-minlength="4" 
 				required 
-				ng-model="a" />
+				ng-model="username" />
 			<div ng-if="sign.username.$invalid && sign.username.$touched">您的输入有误请检查</div>
 		</div>
+		<button class="btn btn-primary" type="submit" ng-disabled="sign.$invalid">提交</button>
 	</form>
 	
 	<script src="../js/angular.js" type="text/javascript" charset="utf-8"></script>
