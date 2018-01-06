@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh" ng-app="test">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>angular表单验证</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
+	<style type="text/css">
+		.wrapper{
+			width: 200px;
+			margin: 30px auto;
+		}
+		.error{
+			color: #a10;
+		}
+		input.error{
+			border: 1px solid #a10;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrapper" ng-controller="cont1">
+		<form name="signForm" ng-submit="submitForm()">
+			<h2>注册</h2>
+			<div class="form-group">
+				<label for="">用户名：</label>
+				<pre>合法{{ signForm.username.$valid }}</pre>
+				<pre>{{ userData.username }}</pre>
+				<input type="text"
+					 name="username" 
+					 class="form-control"
+					 required
+					 ng-minlength="4"
+					 ng-maxlength="32"
+					 ng-model="userData.username" />
+				<p class="error" ng-if="
+					 (signForm.username.$error.minlength ||
+					 signForm.username.$error.maxlength) &&
+					 signForm.username.$touched">用户名长度应在4-32位之间</p>
+				<p class="error" ng-if="
+					signForm.username.$error.required &&
+					signForm.username.$touched">用户名不能为空</p>
+			</div>
+			<div class="form-group">
+				<label for="">密 码：</label>
+				<pre>合法{{signForm.password.$valid}}</pre>
+				<pre>{{userData.password}}</pre>
+				<input type="password" 
+					name="password" 
+					class="form-control"
+					required
+					ng-minlength="6"
+					ng-maxlength="255"
+					ng-model="userData.password" />
+				<p class="error" ng-if="
+					(signForm.password.$error.minlength ||
+					signForm.password.$error.maxlength) &&
+					signForm.password.$touched
+					">密码长度应在6-255位之间</a></p>
+				<p class="error" ng-if="
+					signForm.password.$error.required && signForm.password.$touched 
+					">密码不能为空</p>
+			</div>
+			<div class="form-group">
+				<label for="">确认密码：</label>
+				<pre>合法{{signForm.password2.$valid}}</pre>
+				<pre>{{userData.password2}}</pre>
+				<input type="password" 
+					name="password2" 
+					class="form-control"
+					required
+					ng-model="userData.password2"
+					compare="userData.password" />
+				<p class="error" ng-if="
+					signForm.password2.$error.compare &&
+					signForm.password2.$touched ">两次密码输入不一致</p>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-primary">注册</button>
+			</div>
+		</form>
+	</div>
+	
+	<script src="../js/angular.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		angular.module('test',[])
+			   .controller('cont1',function ($scope) {
+			   	
+			   	   $scope.userData={};
+			   	   
+			   	   $scope.submitForm = function () {
+			   	   	  console.log($scope.userData);
+			   	   	  if ($scope.signForm.$invalide) {
+			   	   	  	alert('请检查您的信息')
+			   	   	  }else{
+			   	   	  	alert('提交成功')
+			   	   	  }
+			   	   }
+			   })
+			   .directive('compare',function () {
+			   	  var o = {};
+			   	  o.strict = 'AE';
+			   	  o.scope = {
+			   	  	orgText : '=compare'
+			   	  };
+			   	  o.require = 'ngModel';
+			   	  o.link = function (sco,ele,att,con) {
+			   	  	con.$validators.compare = function (v) {
+			   	  		return v == sco.orgText
+			   	  	}
+			   	  	sco.$watch('orgText',function () {
+			   	  		con.$validate();
+			   	  	})
+			   	  }
+			   	  return o;
+			   });
+	</script>
+</body>
+</html>
