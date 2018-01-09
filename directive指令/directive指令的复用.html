@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh" ng-app="wrap">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
+	<style type="text/css">
+		#wrapper{
+			width: 200px;
+			margin: 10px auto;
+		}
+	</style>
+	<script src="../js/angular.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body ng-controller="cont">
+	<div id="wrapper" class="panel">
+		<form>
+			<div class="form-group">
+				<label for="">用户名：</label>
+				<input type="text" class="form-control" ng-model="user.username" />
+			</div>	
+			<div class="form-group">
+				<label for="">邮 箱：</label>
+				<input type="email" class="form-control" ng-model="user.email" />
+			</div>	
+			<div class="form-group">
+				<label for="">自动登录：</label>
+				<input type="checkbox" ng-model="user.autologin" />
+			</div>	
+			<div class="form-group">
+				<button class="btn btn-default" ng-click="getFormVal()">获取表单的值</button>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-default" ng-click="setFormVal()">设置表单的值</button>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-default" ng-click="resetForm()">重置表单的值</button>
+			</div>
+		</form>
+	</div>
+	
+	<script type="text/javascript">
+		var app = angular.module('wrap',[]);
+		app.controller('cont',function ($scope) {
+			$scope.user = {
+				username : '艾米',
+				email : '1111111111@qq.com',
+				autologin : true
+			};
+			
+			$scope.getFormVal = function () {
+				console.log($scope.user);
+			};
+			
+			$scope.setFormVal = function () {
+				$scope.user = {
+					username : '艾米11',
+					email : '222222222@qq.com',
+					autologin : false
+				};
+			};
+			
+			$scope.resetForm = function(){
+				$scope.user = {
+					username : '艾米',
+					email : '1111111111@qq.com',
+					autologin : true
+				};
+			}
+		});
+	</script>
+</body>
+</html>

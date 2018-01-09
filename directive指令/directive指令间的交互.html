@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh" ng-app="test">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>directive指令间的交互</title>
+	<script src="../js/angular.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+	<div>
+		<superman strength>strength</superman>
+	</div>
+	
+	<div>
+		<superman strength speed>strength speed</superman>
+	</div>
+	
+	<div>
+		<superman strength speed light>strength speed light</superman>
+	</div>
+	
+	<script type="text/javascript">
+		var app = angular.module('test',[]);
+		app.directive('superman',function () {
+			return {
+				scope : {},
+				restrict : 'AE',
+				controller : function ($scope) {
+					$scope.abilities = [];
+					this.addStrength = function () {
+						$scope.abilities.push('strength');
+					};
+					
+					this.addSpeed = function () {
+						$scope.abilities.push('speed');
+					};
+					
+					this.addLigth = function () {
+						$scope.abilities.push('light');
+					};
+				},
+				link : function (scope,element,attrs) {
+					element.bind('mouseover',function () {
+						console.log(scope.abilities);
+					});
+				}
+			}
+		});
+		app.directive('strength',function () {
+			return {
+				require : '^superman',
+				link : function (scope,element,attrs,supermanCtrl) {
+					supermanCtrl.addStrength();
+				}
+			}
+		});
+		
+		app.directive('speed',function () {
+			return {
+				require : '^superman',
+				link : function (scope,element,attrs,supermanCtrl) {
+					supermanCtrl.addSpeed();
+				}
+			}
+		});
+		
+		app.directive('light',function () {
+			return {
+				require : '^superman',
+				link : function (scope,element,attrs,supermanCtrl) {
+					supermanCtrl.addLigth();
+				}
+			}
+		});
+	</script>
+</body>
+</html>
