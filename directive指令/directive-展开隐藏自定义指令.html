@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>Document</title>
+	<script src="../js/angular.js" type="text/javascript" charset="utf-8"></script>
+	<style type="text/css">
+		.title{
+			width: 300px;
+			height: 40px;
+			background: black;
+			color: white;
+		}
+		.content{
+			width: 300px;
+			height: 120px;
+			border: 1px solid black;
+			box-sizing: border-box;
+		}
+	</style>
+</head>
+<body ng-app="test" ng-controller="cont">
+	
+	<div>
+		<expander titles="title" contents="content"></expander>
+	</div>
+	
+	<script type="text/javascript">
+		var app = angular.module('test',[]);
+		app.controller('cont',function ($scope) {
+			$scope.title = '点击展开'
+			$scope.content = '内容区域'
+		});
+		app.directive('expander',function(){
+			return{
+				restrict : 'AE',
+				replace:true,
+				transclude:true,
+				scope : {
+					titles : '=',
+					contents : '='
+				},
+				template : '<div><div class="title" ng-click="toggle()">{{titles}}</div>'+
+							'<div class="content" ng-show="showMe">{{contents}}</div></div>',
+				link : function(scope,ele,attr){
+					scope.showMe = false;
+					scope.toggle = function(){
+						scope.showMe = !scope.showMe
+					}
+				}
+			}
+		});
+	</script>
+</body>
+</html>
